@@ -1,5 +1,5 @@
 {
-  "name": "joinjs",
+  "name": "join-js",
   "description": "A library to map complex database joins to nested objects.",
   "version": "0.0.1",
   "author": "Naresh Bhatia",
