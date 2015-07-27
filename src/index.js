@@ -1,4 +1,8 @@
 import _ from 'lodash';
+import createError from 'create-error';
+
+/** Thrown when mapOne does not find an object in the resultSet and "isRequired" is passed in as true */
+let NotFoundError = createError('NotFoundError');
 
 /**
  * Maps a resultSet to a collection.
@@ -31,10 +35,26 @@ function map(resultSet, maps, mapId, columnPrefix) {
  * @param {Array} maps - an array of result maps
  * @param {String} mapId - mapId of the top-level objects in the resultSet
  * @param {String} [columnPrefix] - prefix that should be applied to the column names of the top-level objects
- * @returns {Object} one mapped object
+ * @param {boolean} [isRequired] - is a mapped object required to be returned, default is true
+ * @returns {Object} one mapped object or null
+ * @throws {NotFoundError} if object is not found and isRequired is true
  */
-function mapOne(resultSet, maps, mapId, columnPrefix) {
-    return map(resultSet, maps, mapId, columnPrefix)[0];
+function mapOne(resultSet, maps, mapId, columnPrefix, isRequired) {
+    if (isRequired === undefined) {
+        isRequired = true;
+    }
+
+    var mappedCollection = map(resultSet, maps, mapId, columnPrefix);
+
+    if (mappedCollection.length > 0) {
+        return mappedCollection[0];
+    }
+    else if (isRequired) {
+        throw new NotFoundError('EmptyResponse');
+    }
+    else {
+        return null;
+    }
 }
 
 /**
@@ -131,7 +151,8 @@ function getIdProperty(resultMap) {
 
 const joinjs = {
     map: map,
-    mapOne: mapOne
+    mapOne: mapOne,
+    NotFoundError: NotFoundError
 };
 
 export default joinjs;
