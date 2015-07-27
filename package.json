@@ -1,7 +1,7 @@
 {
   "name": "join-js",
   "description": "A library to map complex database joins to nested objects.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Naresh Bhatia",
   "license": "MIT",
   "homepage": "https://github.com/archfirst/joinjs",
@@ -9,7 +9,6 @@
     "type": "git",
     "url": "https://github.com/archfirst/joinjs.git"
   },
-  "main": "dist/index.js",
   "scripts": {
     "test": "gulp",
     "build": "gulp build",
@@ -39,6 +38,14 @@
     "sinon": "^1.12.2",
     "sinon-chai": "^2.7.0"
   },
+  "files": [
+    "dist/",
+    "src/",
+    "test/",
+    "LICENSE",
+    "README.md"
+  ],
+  "main": "dist/index.js",
   "nodeBoilerplateOptions": {
     "mochaGlobals": [
       "stub",
