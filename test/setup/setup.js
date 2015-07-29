@@ -1,4 +1,5 @@
 module.exports = function() {
+    global.assert = global.chai.assert;
     global.expect = global.chai.expect;
 
     beforeEach(function() {

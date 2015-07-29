@@ -40,6 +40,8 @@ function map(resultSet, maps, mapId, columnPrefix) {
  * @throws {NotFoundError} if object is not found and isRequired is true
  */
 function mapOne(resultSet, maps, mapId, columnPrefix, isRequired) {
+
+    // Set up a default value for isRequired
     if (isRequired === undefined) {
         isRequired = true;
     }
@@ -68,8 +70,8 @@ function mapOne(resultSet, maps, mapId, columnPrefix, isRequired) {
  */
 function injectResultInCollection(result, mappedCollection, maps, mapId, columnPrefix) {
 
-    // Make sure there is a columnPrefix
-    if (!columnPrefix) {
+    // Set up a default value for columnPrefix
+    if (columnPrefix === undefined) {
         columnPrefix = '';
     }
 
@@ -98,6 +100,11 @@ function injectResultInCollection(result, mappedCollection, maps, mapId, columnP
  * @param {String} [columnPrefix] - prefix that should be applied to the column names of the top-level objects
  */
 function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix) {
+
+    // Set up a default value for columnPrefix
+    if (columnPrefix === undefined) {
+        columnPrefix = '';
+    }
 
     // Get the resultMap for this object
     let resultMap = _.find(maps, 'mapId', mapId);

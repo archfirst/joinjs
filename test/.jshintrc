@@ -242,6 +242,7 @@
     // ----- Globals -----
     // false: variable as read-only
     "globals": {
+        "assert": false,
         "expect": false
     }
 }

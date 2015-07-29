@@ -84,6 +84,22 @@ describe('Mapper', () => {
         expect(mappedResult.getFullName()).to.equal('Elvis Presley');
     });
 
+    it('should throw a NotFoundError when mapOne() does not find an object', () => {
+
+        let fn = function() {
+            joinjs.mapOne([], domainMaps, 'userMap');
+        };
+
+        expect(fn).to.throw(joinjs.NotFoundError);
+    });
+
+    it('should not throw an Error when mapOne() does not find an object, but isRequired is set to false', () => {
+
+        var mappedResult = joinjs.mapOne([], domainMaps, 'userMap', '', false);
+
+        assert.isNull(mappedResult);
+    });
+
     it('should work when resultSet contains multiple top-level objects', () => {
         let resultSet = [
             {
@@ -97,7 +113,7 @@ describe('Mapper', () => {
                 security_name: 'Ace Ltd',
                 country_code: 'SZ',
                 country_name: 'Switzerland'
-            },
+            }
         ];
 
         let expectedResult = [
