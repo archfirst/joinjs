@@ -33,9 +33,9 @@ function map(resultSet, maps, mapId, columnPrefix) {
  *
  * @param {Array} resultSet - an array of database results
  * @param {Array} maps - an array of result maps
- * @param {String} mapId - mapId of the top-level objects in the resultSet
- * @param {String} [columnPrefix] - prefix that should be applied to the column names of the top-level objects
- * @param {boolean} [isRequired] - is a mapped object required to be returned, default is true
+ * @param {String} mapId - mapId of the top-level object in the resultSet
+ * @param {String} [columnPrefix] - prefix that should be applied to the column names of the top-level object
+ * @param {boolean} [isRequired] - is it required to have a mapped object as a return value? Default is true.
  * @returns {Object} one mapped object or null
  * @throws {NotFoundError} if object is not found and isRequired is true
  */
