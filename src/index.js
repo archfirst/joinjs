@@ -5,7 +5,7 @@ import createError from 'create-error';
 let NotFoundError = createError('NotFoundError');
 
 /**
- * Maps a resultSet to a collection.
+ * Maps a resultSet to an array of objects.
  *
  * @param {Array} resultSet - an array of database results
  * @param {Array} maps - an array of result maps
