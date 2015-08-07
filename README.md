@@ -2,10 +2,10 @@
 
 JoinJS is a JavaScript library to map complex database joins to nested objects. It's a simpler alternative to a full-blown Object-Relation Mapper (ORM), and gives you direct control over your database interactions.
 
-## Motivation
-ORMs generally introduce a thick layer of abstraction between objects and database tables. This usually hinders, rather than helps, developer productivity. In complex use cases, it is difficult enough to devise efficient queries, but with ORMs you also have to *teach* them to generate the same query. It takes extra time to do this and you may not be able to produce the same query. In the worst case scenario, the ORM may hit the database multiple times for something that you were able to do in a single query.
+## Motivation: Direct, no-nonsense control over your database
+Traditional ORMs introduce a thick layer of abstraction between objects and database tables. This usually hinders, rather than helps, developer productivity. In complex use cases, it is difficult enough to devise efficient queries, but with ORMs you also have to *teach* them to generate the same query. It takes extra time to do this and you may not be able to produce the same query. In the worst case scenario, the ORM may hit the database multiple times for something that you were able to do in a single query.
 
-JoinJS takes a much simpler and straightforward approach inspired by a Java library called [MyBatis](http://mybatis.github.io/mybatis-3/). You can use any database driver or query builder (such as [Knex.js](http://knexjs.org/)) to query your database, however you use JoinJS to convert the returned results to a hierarchy of nested objects.
+JoinJS takes a much simpler and straightforward approach inspired by a popular Java mapping framework called [MyBatis](http://mybatis.github.io/mybatis-3/) (see the post on [MyBatis vs. other ORMs](https://archfirst.org/mybatis-vs-other-orms/). You can use any database driver or query builder (such as [Knex.js](http://knexjs.org/)) to query your database, however you use JoinJS to convert the returned results into a hierarchy of nested objects.
 
 ## Example
 Suppose you have a one-to-many relationship between a `Team` and its `Players`. You want to retrieve all teams along with their players. Here's the query for to do this:
@@ -61,20 +61,16 @@ To teach JoinJS how to do this, you must create two result maps that describe yo
 var resultMaps = [
     {
         mapId: 'teamMap',
-        idProperty: {name: 'id', column: 'id'},
-        properties: [
-            {name: 'name', column: 'name'}
-        ],
+        idProperty: 'id',
+        properties: ['name'],
         collections: [
             {name: 'players', mapId: 'playerMap', columnPrefix: 'player_'}
         ]
     },
     {
         mapId: 'playerMap',
-        idProperty: {name: 'id', column: 'id'},
-        properties: [
-            {name: 'name', column: 'name'}
-        ]
+        idProperty: 'id',
+        properties: ['name']
     }
 ]
 ```
@@ -85,7 +81,7 @@ Once you have created these result maps, you can simply call JoinJS to convert y
 var mappedResult = joinjs.map(resultSet, resultMaps, 'teamMap', 'team_');
 ```
 
-That's it! It doesn't matter how deep or complex your object hierarchy is, JoinJS can map it for you. Read the documentation below for more details. You can find more examples in the [test suite](https://github.com/archfirst/joinjs/tree/master/test). Also check out the [Manage My Money](https://github.com/archfirst/manage-my-money-server) project for an example of a full-fledged application built with JoinJS and other libraries to manage personal finances.
+That's it! It doesn't matter how deep or complex your object hierarchy is, JoinJS can map it for you. Read the documentation below for more details. You can find more examples in the [test suite](https://github.com/archfirst/joinjs/tree/master/test). Follow the [step-by-step tutorial](https://archfirst.org/joinjs-an-alternative-to-complex-orms/) for a hands-on introduction. Once you have mastered the basics, check out the [Manage My Money](https://github.com/archfirst/manage-my-money-server) project to see how you can build a full-fledged application complete with a front-end using JoinJS and other useful libraries.
 
 ## Installation
 
@@ -102,11 +98,11 @@ ResultMaps are used to teach JoinJS how to map database results to objects. Each
 
 - `createNew {function} (optional)` - A function that returns a blank new instance of the mapped object. Use this property to construct a custom object instead of a generic JavaScript `Object`.
 
-- `idProperty {Object} (optional)` - specifies the name of the id property in the mapped object and in the result set. Default is `{name: 'id', column: 'id'}`.
+- `idProperty {String | Object} (optional)` - specifies the name of the id property in the mapped object and in the result set. Default is `id`, which implies that the name of the id property in the mapped object as well as the column name in the result set are both `id`. If the two names are different, then you must specify the Object form, e.g. `{name: 'id', column: 'person_id'}`.
     - `name` - property that identifies the mapped object
     - `column` - property that identifies the database record in the result set
 
-- `properties {Array} (optional)` - mappings for other properties. Each mapping contains:
+- `properties {Array} (optional)` - names of other properties. For any property that has a different name in the mapped object vs. the result set, you must specify the object form, e.g. `{name: 'firstName', column: 'first_name'}`. The properties of the object form are:
     - `name` - property name in the mapped object
     - `column` - property name in the result set
 
@@ -149,3 +145,8 @@ This is a convenience method that maps a resultSet to a single object. It is use
 Returns the mapped object or `null` if no object was mapped.
 
 Throws a `NotFoundError` if no object is mapped and `isRequired` is `true`.
+
+## Resources
+- [JoinJS test suite](https://github.com/archfirst/joinjs/tree/master/test) - contains examples of various use cases
+- [Step-by-step tutorial](https://archfirst.org/joinjs-an-alternative-to-complex-orms/) - provides a hands-on introduction to JoinJS
+- [Manage My Money](https://github.com/archfirst/manage-my-money-server) - a full-fledged application complete with a front-end using JoinJS and other useful libraries

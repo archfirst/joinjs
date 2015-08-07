@@ -1,7 +1,7 @@
 {
   "name": "join-js",
   "description": "A library to map complex database joins to nested objects.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Naresh Bhatia",
   "license": "MIT",
   "homepage": "https://github.com/archfirst/joinjs",

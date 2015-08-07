@@ -1,17 +1,13 @@
 let testMaps = [
     {
         mapId: 'noIdProperty',
-        properties: [
-            {name: 'name'}
-        ]
+        properties: ['name']
     },
 
     {
         mapId: 'withIdProperty',
-        idProperty: {name: 'symbol'},
-        properties: [
-            {name: 'name'}
-        ]
+        idProperty: 'symbol',
+        properties: ['name']
     },
 
     {
@@ -28,9 +24,7 @@ let testMaps = [
 
     {
         mapId: 'customerMap',
-        properties: [
-            {name: 'name'}
-        ],
+        properties: ['name'],
         collections: [
             {name: 'orders', mapId: 'orderMap', columnPrefix: 'order_'}
         ]
@@ -38,18 +32,14 @@ let testMaps = [
 
     {
         mapId: 'orderMap',
-        properties: [
-            {name: 'total'}
-        ]
+        properties: ['total']
     },
 
     // Multiple one-to-one relationships with same target entity
     // Note that we cannot have recursive maps
     {
         mapId: 'personMap',
-        properties: [
-            {name: 'name'}
-        ],
+        properties: ['name'],
         associations: [
             {name: 'father', mapId: 'shallowPersonMap', columnPrefix: 'father_'},
             {name: 'mother', mapId: 'shallowPersonMap', columnPrefix: 'mother_'}
@@ -57,117 +47,91 @@ let testMaps = [
     },
     {
         mapId: 'shallowPersonMap',
-        properties: [
-            {name: 'name'}
-        ]
+        properties: ['name']
     },
 
     // one-to-one-to-one relationship
     // A ---> 1 B ---> 1 C
     {
         mapId: 'aMap',
-        properties: [
-            {name: 'prop'}
-        ],
+        properties: ['prop'],
         associations: [
             {name: 'b', mapId: 'bMap', columnPrefix: 'b_'}
         ]
     },
     {
         mapId: 'bMap',
-        properties: [
-            {name: 'prop'}
-        ],
+        properties: ['prop'],
         associations: [
             {name: 'c', mapId: 'cMap', columnPrefix: 'c_'}
         ]
     },
     {
         mapId: 'cMap',
-        properties: [
-            {name: 'prop'}
-        ]
+        properties: ['prop']
     },
 
     // one-to-one-to-many relationship
     // D ---> 1 E ---> * F
     {
         mapId: 'dMap',
-        properties: [
-            {name: 'prop'}
-        ],
+        properties: ['prop'],
         associations: [
             {name: 'e', mapId: 'eMap', columnPrefix: 'e_'}
         ]
     },
     {
         mapId: 'eMap',
-        properties: [
-            {name: 'prop'}
-        ],
+        properties: ['prop'],
         collections: [
             {name: 'fCollection', mapId: 'fMap', columnPrefix: 'f_'}
         ]
     },
     {
         mapId: 'fMap',
-        properties: [
-            {name: 'prop'}
-        ]
+        properties: ['prop']
     },
 
     // one-to-many-to-one relationship
     // G ---> * H ---> 1 I
     {
         mapId: 'gMap',
-        properties: [
-            {name: 'prop'}
-        ],
+        properties: ['prop'],
         collections: [
             {name: 'hCollection', mapId: 'hMap', columnPrefix: 'h_'}
         ]
     },
     {
         mapId: 'hMap',
-        properties: [
-            {name: 'prop'}
-        ],
+        properties: ['prop'],
         associations: [
             {name: 'i', mapId: 'iMap', columnPrefix: 'i_'}
         ]
     },
     {
         mapId: 'iMap',
-        properties: [
-            {name: 'prop'}
-        ]
+        properties: ['prop']
     },
 
     // one-to-many-to-many relationship
     // J ---> * K ---> * L
     {
         mapId: 'jMap',
-        properties: [
-            {name: 'prop'}
-        ],
+        properties: ['prop'],
         collections: [
             {name: 'kCollection', mapId: 'kMap', columnPrefix: 'k_'}
         ]
     },
     {
         mapId: 'kMap',
-        properties: [
-            {name: 'prop'}
-        ],
+        properties: ['prop'],
         collections: [
             {name: 'lCollection', mapId: 'lMap', columnPrefix: 'l_'}
         ]
     },
     {
         mapId: 'lMap',
-        properties: [
-            {name: 'prop'}
-        ]
+        properties: ['prop']
     }
 ];
 

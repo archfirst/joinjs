@@ -117,6 +117,12 @@ function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix) {
 
     // Copy other properties
     _.each(resultMap.properties, function(property) {
+        // If property is a string, convert it to an object
+        if (typeof property === 'string') {
+            property = {name: property, column: property};
+        }
+
+        // Copy only if property does not exist already
         if (!mappedObject[property.name]) {
 
             // The default for column name is property name
@@ -158,6 +164,11 @@ function createMappedObject(resultMap) {
 
 function getIdProperty(resultMap) {
     var idProperty = (resultMap.idProperty) ? resultMap.idProperty : {name: 'id', column: 'id'};
+
+    // If property is a string, convert it to an object
+    if (typeof idProperty === 'string') {
+        idProperty = {name: idProperty, column: idProperty};
+    }
 
     // The default for column name is property name
     if (!idProperty.column) {

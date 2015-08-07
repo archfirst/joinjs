@@ -6,10 +6,8 @@ let domainMaps = [
         createNew: function() {
             return new domain.Country();
         },
-        idProperty: {name: 'code'},
-        properties: [
-            {name: 'name'}
-        ]
+        idProperty: 'code',
+        properties: ['name']
     },
 
     {
@@ -17,10 +15,8 @@ let domainMaps = [
         createNew: function() {
             return new domain.Fund();
         },
-        idProperty: {name: 'id'},
-        properties: [
-            {name: 'name'}
-        ]
+        idProperty: 'id',
+        properties: ['name']
     },
 
     {
@@ -28,10 +24,8 @@ let domainMaps = [
         createNew: function() {
             return new domain.Holding();
         },
-        idProperty: {name: 'id'},
-        properties: [
-            {name: 'quantity'}
-        ],
+        idProperty: 'id',
+        properties: ['quantity'],
         associations: [
             {name: 'fund', mapId: 'fundMap', columnPrefix: 'fund_'},
             {name: 'security', mapId: 'securityMap', columnPrefix: 'security_'}
@@ -43,10 +37,8 @@ let domainMaps = [
         createNew: function() {
             return new domain.Security();
         },
-        idProperty: {name: 'symbol'},
-        properties: [
-            {name: 'name'}
-        ],
+        idProperty: 'symbol',
+        properties: ['name'],
         associations: [
             {name: 'country', mapId: 'countryMap', columnPrefix: 'country_'}
         ]
@@ -57,9 +49,9 @@ let domainMaps = [
         createNew: function() {
             return new domain.User();
         },
-        idProperty: {name: 'id'},
+        idProperty: 'id',
         properties: [
-            {name: 'uid'},
+            'uid',
             {name: 'firstName', column: 'first_name'},
             {name: 'lastName', column: 'last_name'}
         ]
