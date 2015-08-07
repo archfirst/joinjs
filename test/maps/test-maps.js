@@ -2,15 +2,23 @@ let testMaps = [
     {
         mapId: 'noIdProperty',
         properties: [
-            {name: 'name', column: 'name'}
+            {name: 'name'}
         ]
     },
 
     {
         mapId: 'withIdProperty',
-        idProperty: {name: 'symbol', column: 'symbol'},
+        idProperty: {name: 'symbol'},
         properties: [
-            {name: 'name', column: 'name'}
+            {name: 'name'}
+        ]
+    },
+
+    {
+        mapId: 'withColumnSpecification',
+        idProperty: {name: 'id', column: 'object_id'},
+        properties: [
+            {name: 'firstName', column: 'first_name'}
         ]
     },
 
@@ -19,16 +27,9 @@ let testMaps = [
     },
 
     {
-        mapId: 'noIdProperty',
-        properties: [
-            {name: 'name', column: 'name'}
-        ]
-    },
-
-    {
         mapId: 'customerMap',
         properties: [
-            {name: 'name', column: 'name'}
+            {name: 'name'}
         ],
         collections: [
             {name: 'orders', mapId: 'orderMap', columnPrefix: 'order_'}
@@ -38,7 +39,7 @@ let testMaps = [
     {
         mapId: 'orderMap',
         properties: [
-            {name: 'total', column: 'total'}
+            {name: 'total'}
         ]
     },
 
@@ -47,7 +48,7 @@ let testMaps = [
     {
         mapId: 'personMap',
         properties: [
-            {name: 'name', column: 'name'}
+            {name: 'name'}
         ],
         associations: [
             {name: 'father', mapId: 'shallowPersonMap', columnPrefix: 'father_'},
@@ -57,7 +58,7 @@ let testMaps = [
     {
         mapId: 'shallowPersonMap',
         properties: [
-            {name: 'name', column: 'name'}
+            {name: 'name'}
         ]
     },
 
@@ -66,7 +67,7 @@ let testMaps = [
     {
         mapId: 'aMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ],
         associations: [
             {name: 'b', mapId: 'bMap', columnPrefix: 'b_'}
@@ -75,7 +76,7 @@ let testMaps = [
     {
         mapId: 'bMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ],
         associations: [
             {name: 'c', mapId: 'cMap', columnPrefix: 'c_'}
@@ -84,7 +85,7 @@ let testMaps = [
     {
         mapId: 'cMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ]
     },
 
@@ -93,7 +94,7 @@ let testMaps = [
     {
         mapId: 'dMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ],
         associations: [
             {name: 'e', mapId: 'eMap', columnPrefix: 'e_'}
@@ -102,7 +103,7 @@ let testMaps = [
     {
         mapId: 'eMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ],
         collections: [
             {name: 'fCollection', mapId: 'fMap', columnPrefix: 'f_'}
@@ -111,7 +112,7 @@ let testMaps = [
     {
         mapId: 'fMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ]
     },
 
@@ -120,7 +121,7 @@ let testMaps = [
     {
         mapId: 'gMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ],
         collections: [
             {name: 'hCollection', mapId: 'hMap', columnPrefix: 'h_'}
@@ -129,7 +130,7 @@ let testMaps = [
     {
         mapId: 'hMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ],
         associations: [
             {name: 'i', mapId: 'iMap', columnPrefix: 'i_'}
@@ -138,7 +139,7 @@ let testMaps = [
     {
         mapId: 'iMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ]
     },
 
@@ -147,7 +148,7 @@ let testMaps = [
     {
         mapId: 'jMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ],
         collections: [
             {name: 'kCollection', mapId: 'kMap', columnPrefix: 'k_'}
@@ -156,7 +157,7 @@ let testMaps = [
     {
         mapId: 'kMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ],
         collections: [
             {name: 'lCollection', mapId: 'lMap', columnPrefix: 'l_'}
@@ -165,7 +166,7 @@ let testMaps = [
     {
         mapId: 'lMap',
         properties: [
-            {name: 'prop', column: 'prop'}
+            {name: 'prop'}
         ]
     }
 ];

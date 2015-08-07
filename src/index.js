@@ -118,7 +118,11 @@ function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix) {
     // Copy other properties
     _.each(resultMap.properties, function(property) {
         if (!mappedObject[property.name]) {
-            mappedObject[property.name] = result[columnPrefix + property.column];
+
+            // The default for column name is property name
+            let column = (property.column) ? property.column : property.name;
+
+            mappedObject[property.name] = result[columnPrefix + column];
         }
     });
 
@@ -153,7 +157,14 @@ function createMappedObject(resultMap) {
 }
 
 function getIdProperty(resultMap) {
-    return (resultMap.idProperty) ? resultMap.idProperty : {name: 'id', column: 'id'};
+    var idProperty = (resultMap.idProperty) ? resultMap.idProperty : {name: 'id', column: 'id'};
+
+    // The default for column name is property name
+    if (!idProperty.column) {
+        idProperty.column = idProperty.name;
+    }
+
+    return idProperty;
 }
 
 const joinjs = {

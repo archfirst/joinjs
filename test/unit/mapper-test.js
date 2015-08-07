@@ -5,6 +5,19 @@ import domainMaps from '../maps/domain-maps';
 import testMaps from '../maps/test-maps';
 
 describe('Mapper', () => {
+    it('should work when idProperty is not specified', () => {
+        let resultSet = [
+            {
+                id: 1234,
+                name: 'Elvis Presley'
+            }
+        ];
+
+        var mappedResult = joinjs.mapOne(resultSet, testMaps, 'noIdProperty');
+
+        expect(mappedResult).to.deep.equal(resultSet[0]);
+    });
+
     it('should work when idProperty is specified', () => {
         let resultSet = [
             {
@@ -18,17 +31,22 @@ describe('Mapper', () => {
         expect(mappedResult).to.deep.equal(resultSet[0]);
     });
 
-    it('should work when idProperty is not specified', () => {
+    it('should work when column name is specified', () => {
         let resultSet = [
             {
-                id: 1234,
-                name: 'Elvis Presley'
+                object_id: 1234,
+                first_name: 'Elvis'
             }
         ];
 
-        var mappedResult = joinjs.mapOne(resultSet, testMaps, 'noIdProperty');
+        let expectedResult = {
+            id: 1234,
+            firstName: 'Elvis'
+        };
 
-        expect(mappedResult).to.deep.equal(resultSet[0]);
+        var mappedResult = joinjs.mapOne(resultSet, testMaps, 'withColumnSpecification');
+
+        expect(mappedResult).to.deep.equal(expectedResult);
     });
 
     it('should work when properties are not specified', () => {
