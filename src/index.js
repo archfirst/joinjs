@@ -80,14 +80,17 @@ function injectResultInCollection(result, mappedCollection, maps, mapId, columnP
     let idProperty = getIdProperty(resultMap);
     let mappedObject = _.find(mappedCollection, idProperty.name, result[columnPrefix + idProperty.column]);
 
-    // Create mappedObject if it does not exist in mappedCollection
-    if (!mappedObject) {
-        mappedObject = createMappedObject(resultMap);
-        mappedCollection.push(mappedObject);
-    }
+    // ignore null keys
+    if ( result[columnPrefix + idProperty.column]) {
+        // Create mappedObject if it does not exist in mappedCollection
+        if (!mappedObject) {
+            mappedObject = createMappedObject(resultMap);
+            mappedCollection.push(mappedObject);
+        }
 
-    // Inject result in object
-    injectResultInObject(result, mappedObject, maps, mapId, columnPrefix);
+        // Inject result in object
+        injectResultInObject(result, mappedObject, maps, mapId, columnPrefix);
+    }
 }
 
 /**
