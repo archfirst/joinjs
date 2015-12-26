@@ -4,9 +4,10 @@ const del = require('del');
 const path = require('path');
 const mkdirp = require('mkdirp');
 const isparta = require('isparta');
+const child_process = require('child_process');
 
 const manifest = require('./package.json');
-const config = manifest.nodeBoilerplateOptions;
+const config = manifest.gulpConfig;
 const mainFile = manifest.main;
 const destinationFolder = path.dirname(mainFile);
 
@@ -39,6 +40,7 @@ function createLintTask(taskName, files) {
             .pipe($.jshint.reporter('jshint-stylish'))
             .pipe($.notify(jshintNotify))
             .pipe($.jscs())
+            .pipe($.jscs.reporter())
             .pipe($.notify(jscsNotify))
             .pipe($.jshint.reporter('fail'));
     });
@@ -82,6 +84,25 @@ gulp.task('coverage', function(done) {
         });
 });
 
+gulp.task('apidocs', function() {
+    var args = [
+        './node_modules/jsdoc/jsdoc.js',
+        '-r',
+        'src',
+        '-d',
+        'apidocs'
+    ];
+
+    var jsdoc = child_process.spawn('node', args);
+
+    jsdoc.stdout.on('data', function(data) {
+        process.stdout.write(data);
+    });
+
+    jsdoc.stderr.on('data', function(data) {
+        process.stdout.write(data);
+    });
+});
 
 // Lint and run our tests
 gulp.task('test', ['lint-src', 'lint-test'], test);
