@@ -132,6 +132,32 @@ let testMaps = [
     {
         mapId: 'lMap',
         properties: ['prop']
+    },
+
+    // Two one-to-many relationships
+    // M ---> * N
+    // M ---> * O
+    // M ---> * P
+    {
+        mapId: 'mMap',
+        properties: ['prop'],
+        collections: [
+            {name: 'nCollection', mapId: 'nMap', columnPrefix: 'n_'},
+            {name: 'oCollection', mapId: 'oMap', columnPrefix: 'o_'},
+            {name: 'pCollection', mapId: 'pMap', columnPrefix: 'p_'},
+        ]
+    },
+    {
+        mapId: 'nMap',
+        properties: ['prop']
+    },
+    {
+        mapId: 'oMap',
+        properties: ['prop']
+    },
+    {
+        mapId: 'pMap',
+        properties: ['prop']
     }
 ];
 

@@ -553,4 +553,34 @@ describe('Mapper', () => {
 
         expect(mappedResult).to.deep.equal(expectedResult);
     });
+
+    it('should work for multiple one-to-many relationships', () => {
+        let resultSet = [
+            { m_id: 1, m_prop: 10, n_id: 11, n_prop: 110, o_id: 21, o_prop: 210, p_id: null, p_prop: null },
+            { m_id: 1, m_prop: 10, n_id: 11, n_prop: 110, o_id: 22, o_prop: 220, p_id: null, p_prop: null },
+            { m_id: 1, m_prop: 10, n_id: 12, n_prop: 120, o_id: 21, o_prop: 210, p_id: null, p_prop: null },
+            { m_id: 1, m_prop: 10, n_id: 12, n_prop: 120, o_id: 22, o_prop: 220, p_id: null, p_prop: null }
+        ];
+
+        let expectedResult = [
+            {
+                id: 1,
+                prop: 10,
+                nCollection: [
+                    { id: 11, prop: 110 },
+                    { id: 12, prop: 120 }
+                ],
+                oCollection: [
+                    { id: 21, prop: 210 },
+                    { id: 22, prop: 220 }
+                ],
+                pCollection: [
+                ]
+            }
+        ];
+
+        var mappedResult = joinjs.map(resultSet, testMaps, 'mMap', 'm_');
+
+        expect(mappedResult).to.deep.equal(expectedResult);
+    });
 });
