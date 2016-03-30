@@ -266,6 +266,56 @@ describe('Mapper', () => {
         expect(mappedResult).to.deep.equal(expectedResult);
     });
 
+    it('should work for one-to-one relationships where the target entity is null', () => {
+        let resultSet = [
+            {
+                security_symbol: 'AAPL',
+                security_name: 'Apple Inc.',
+                country_code: null,
+                country_name: null
+            }
+        ];
+
+        let expectedResult = {
+            symbol: 'AAPL',
+            name: 'Apple Inc.',
+            country: null
+        };
+
+        var mappedResult = joinjs.mapOne(resultSet, domainMaps, 'securityMap', 'security_');
+
+        expect(mappedResult).to.deep.equal(expectedResult);
+    });
+
+    it('should work for one-to-many relationships where the target entity is null', () => {
+        let resultSet = [
+            { customer_id: 100, customer_name: 'Elvis Presley', order_id: 1000, order_total: 100 },
+            { customer_id: 100, customer_name: 'Elvis Presley', order_id: 2000, order_total: 200 },
+            { customer_id: 101, customer_name: 'John Lennon',   order_id: null, order_total: null }
+        ];
+
+        let expectedResult = [
+            {
+                id: 100,
+                name: 'Elvis Presley',
+                orders: [
+                    { id: 1000, total: 100 },
+                    { id: 2000, total: 200 }
+                ]
+            },
+            {
+                id: 101,
+                name: 'John Lennon',
+                orders: [
+                ]
+            }
+        ];
+
+        var mappedResult = joinjs.map(resultSet, testMaps, 'customerMap', 'customer_');
+
+        expect(mappedResult).to.deep.equal(expectedResult);
+    });
+
     it('should work for one-to-one-to-one relationships', () => {
         let resultSet = [
             { a_id: 1, a_prop: 10, b_id: 11, b_prop: 110, c_id: 111, c_prop: 1110 },

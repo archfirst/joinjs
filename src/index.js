@@ -80,8 +80,8 @@ function injectResultInCollection(result, mappedCollection, maps, mapId, columnP
     let idProperty = getIdProperty(resultMap);
     let mappedObject = _.find(mappedCollection, idProperty.name, result[columnPrefix + idProperty.column]);
 
-    // ignore null keys
-    if ( result[columnPrefix + idProperty.column]) {
+    // Inject only if the value of idProperty is not null (ignore joins to null records)
+    if (result[columnPrefix + idProperty.column]) {
         // Create mappedObject if it does not exist in mappedCollection
         if (!mappedObject) {
             mappedObject = createMappedObject(resultMap);
@@ -141,11 +141,20 @@ function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix) {
         let associatedObject = mappedObject[association.name];
         if (!associatedObject) {
             let associatedResultMap = _.find(maps, 'mapId', association.mapId);
-            associatedObject = createMappedObject(associatedResultMap);
-            mappedObject[association.name] = associatedObject;
+            let associatedObjectIdProperty = getIdProperty(associatedResultMap);
+            // Don't create associated object if it's key value is null
+            if (result[association.columnPrefix + associatedObjectIdProperty.column]) {
+                associatedObject = createMappedObject(associatedResultMap);
+                mappedObject[association.name] = associatedObject;
+            }
+            else {
+                mappedObject[association.name] = null;
+            }
         }
 
-        injectResultInObject(result, associatedObject, maps, association.mapId, association.columnPrefix);
+        if (associatedObject) {
+            injectResultInObject(result, associatedObject, maps, association.mapId, association.columnPrefix);
+        }
     });
 
     // Copy collections
