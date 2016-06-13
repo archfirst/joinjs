@@ -12,20 +12,19 @@
   "scripts": {
     "test": "gulp",
     "build": "gulp build",
-    "coverage": "gulp coverage",
-    "prepublish": "npm run build"
+    "coverage": "gulp coverage"
   },
   "dependencies": {
     "create-error": "^0.3.1",
     "lodash": "^3.10.0"
   },
   "devDependencies": {
-    "babel": "^5.8.5",
+    "babel-preset-es2015": "^6.9.0",
     "chai": "^3.4.1",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
-    "gulp-babel": "^5.1.0",
-    "gulp-istanbul": "^0.10.0",
+    "gulp-babel": "^6.1.2",
+    "gulp-istanbul": "^1.0.0",
     "gulp-jscs": "^3.0.2",
     "gulp-jshint": "^2.0.0",
     "gulp-load-plugins": "^1.1.0",
@@ -37,9 +36,7 @@
     "jshint": "^2.8.0",
     "jshint-stylish": "^2.1.0",
     "mkdirp": "^0.5.0",
-    "mocha": "^2.3.4",
-    "sinon": "^1.12.2",
-    "sinon-chai": "^2.7.0"
+    "mocha": "^2.3.4"
   },
   "files": [
     "dist/",
@@ -48,12 +45,5 @@
     "LICENSE",
     "README.md"
   ],
-  "main": "dist/index.js",
-  "gulpConfig": {
-    "mochaGlobals": [
-      "stub",
-      "spy",
-      "expect"
-    ]
-  }
+  "main": "dist/index.js"
 }

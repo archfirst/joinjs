@@ -3,6 +3,7 @@ node_modules
 
 # Ignore build/release directories
 dist
+coverage
 
 # Ignore Web Storm
 .idea

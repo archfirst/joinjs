@@ -86,7 +86,7 @@ That's it! It doesn't matter how deep or complex your object hierarchy is, JoinJ
 ## Installation
 
 ```bash
-$ npm install join-js
+$ npm install --save join-js
 ```
 
 ## Documentation

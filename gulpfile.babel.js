@@ -1,19 +1,22 @@
-const gulp = require('gulp');
-const $ = require('gulp-load-plugins')();
-const del = require('del');
-const path = require('path');
-const mkdirp = require('mkdirp');
-const isparta = require('isparta');
-const child_process = require('child_process');
+import gulp from 'gulp';
+import gulpLoadPlugins from 'gulp-load-plugins';
+import del from 'del';
+import path from 'path';
+import mkdirp from 'mkdirp';
+import { Instrumenter } from 'isparta';
+import child_process from 'child_process';
 
-const manifest = require('./package.json');
-const config = manifest.gulpConfig;
-const mainFile = manifest.main;
-const destinationFolder = path.dirname(mainFile);
+const $ = gulpLoadPlugins();
+const DST_DIR = './dist';
+const MOCHA_GLOBALS = [
+    "stub",
+    "spy",
+    "expect"
+];
 
 // Remove the built files
-gulp.task('clean', function(cb) {
-    del([destinationFolder], cb);
+gulp.task('clean', function() {
+    return del([DST_DIR]);
 });
 
 // Send a notification when JSHint fails,
@@ -56,26 +59,23 @@ createLintTask('lint-test', ['test/**/*.js'])
 gulp.task('build', ['lint-src', 'clean'], function() {
 
     // Create our output directory
-    mkdirp.sync(destinationFolder);
+    mkdirp.sync(DST_DIR);
     return gulp.src('src/**/*.js')
         .pipe($.plumber())
-        .pipe($.babel({blacklist: ['useStrict']}))
-        .pipe(gulp.dest(destinationFolder));
+        .pipe($.babel())
+        .pipe(gulp.dest(DST_DIR));
 });
 
 function test() {
-    return gulp.src(['test/setup/node.js', 'test/unit/**/*.js'], {read: false})
+    return gulp.src('test/unit/**/*.js', {read: false})
         .pipe($.plumber())
-        .pipe($.mocha({reporter: 'spec', globals: config.mochaGlobals}));
+        .pipe($.mocha({reporter: 'spec', globals: MOCHA_GLOBALS}));
 }
-
-// Make babel preprocess the scripts the user tries to import from here on.
-require('babel/register');
 
 gulp.task('coverage', function(done) {
     gulp.src(['src/*.js'])
         .pipe($.plumber())
-        .pipe($.istanbul({instrumenter: isparta.Instrumenter}))
+        .pipe($.istanbul({instrumenter: Instrumenter}))
         .pipe($.istanbul.hookRequire())
         .on('finish', function() {
             return test()

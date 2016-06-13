@@ -1,5 +1,7 @@
 /* jshint camelcase: false */
 
+import { assert, expect } from 'chai';
+
 import joinjs from '../../src';
 import domainMaps from '../maps/domain-maps';
 import testMaps from '../maps/test-maps';
