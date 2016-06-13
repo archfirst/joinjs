@@ -76,9 +76,9 @@ function injectResultInCollection(result, mappedCollection, maps, mapId, columnP
     }
 
     // Check if the object is already in mappedCollection
-    let resultMap = _.find(maps, 'mapId', mapId);
+    let resultMap = _.find(maps, ['mapId', mapId]);
     let idProperty = getIdProperty(resultMap);
-    let mappedObject = _.find(mappedCollection, idProperty.name, result[columnPrefix + idProperty.column]);
+    let mappedObject = _.find(mappedCollection, [idProperty.name, result[columnPrefix + idProperty.column]]);
 
     // Inject only if the value of idProperty is not null (ignore joins to null records)
     if (result[columnPrefix + idProperty.column]) {
@@ -110,7 +110,7 @@ function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix) {
     }
 
     // Get the resultMap for this object
-    let resultMap = _.find(maps, 'mapId', mapId);
+    let resultMap = _.find(maps, ['mapId', mapId]);
 
     // Copy id property
     let idProperty = getIdProperty(resultMap);
@@ -140,7 +140,7 @@ function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix) {
 
         let associatedObject = mappedObject[association.name];
         if (!associatedObject) {
-            let associatedResultMap = _.find(maps, 'mapId', association.mapId);
+            let associatedResultMap = _.find(maps, ['mapId', association.mapId]);
             let associatedObjectIdProperty = getIdProperty(associatedResultMap);
             // Don't create associated object if it's key value is null
             if (result[association.columnPrefix + associatedObjectIdProperty.column]) {
