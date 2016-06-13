@@ -1,8 +1,13 @@
 import _ from 'lodash';
-import createError from 'create-error';
 
 /** Thrown when mapOne does not find an object in the resultSet and "isRequired" is passed in as true */
-let NotFoundError = createError('NotFoundError');
+function NotFoundError(message = 'Not Found') {
+    this.name = 'NotFoundError';
+    this.message = message;
+    this.stack = (new Error()).stack;
+}
+NotFoundError.prototype = Object.create(Error.prototype);
+NotFoundError.prototype.constructor = NotFoundError;
 
 /**
  * Maps a resultSet to an array of objects.
@@ -39,12 +44,7 @@ function map(resultSet, maps, mapId, columnPrefix) {
  * @returns {Object} one mapped object or null
  * @throws {NotFoundError} if object is not found and isRequired is true
  */
-function mapOne(resultSet, maps, mapId, columnPrefix, isRequired) {
-
-    // Set up a default value for isRequired
-    if (isRequired === undefined) {
-        isRequired = true;
-    }
+function mapOne(resultSet, maps, mapId, columnPrefix, isRequired=true) {
 
     var mappedCollection = map(resultSet, maps, mapId, columnPrefix);
 
