@@ -89,6 +89,16 @@ That's it! It doesn't matter how deep or complex your object hierarchy is, JoinJ
 $ npm install --save join-js
 ```
 
+Don't forget the dash in the package name (`join-js`).
+
+Using with ES5:
+
+    var joinjs = require('join-js').default;
+
+Using with ES6:
+
+    import joinjs from 'join-js';
+
 ## Documentation
 
 ### ResultMap
