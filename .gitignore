@@ -17,3 +17,6 @@ apidocs
 # Ignore OS generated files
 .DS_Store*
 Thumbs.db
+
+# Ignore npm package lock
+.package-lock.json
