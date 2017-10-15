@@ -19,6 +19,21 @@ let testMaps = [
     },
 
     {
+        mapId: 'withCompositeIdProperty',
+        idProperty: ['person_id', 'language_id'],
+        properties: ['name']
+    },
+
+    {
+        mapId: 'withCompositeIdPropertyAndColumnSpecification',
+        idProperty: [
+            {name: 'personId', column: 'person_id'},
+            {name: 'languageId', column: 'language_id'}
+        ],
+        properties: ['name']
+    },
+
+    {
         mapId: 'noProperties'
     },
 

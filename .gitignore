@@ -19,4 +19,4 @@ apidocs
 Thumbs.db
 
 # Ignore npm package lock
-.package-lock.json
+package-lock.json
