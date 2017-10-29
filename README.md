@@ -25,7 +25,7 @@ FROM   teams t
 Assume that this query returns the following result set:
 
 ```javascript
-var resultSet = [
+let resultSet = [
     { team_id: 1, team_name: 'New England Patriots', player_id: 1, player_name: 'Tom Brady'      },
     { team_id: 1, team_name: 'New England Patriots', player_id: 2, player_name: 'Rob Gronkowski' },
     { team_id: 2, team_name: 'New York Jets',        player_id: 3, player_name: 'Geno Smith'     },
@@ -40,7 +40,7 @@ You can use JoinJS to convert this result set in to an array of teams with neste
 [
     {
         id: 1,
-        name: 'New England Patriots'
+        name: 'New England Patriots',
         players: [
             { id: 1, name: 'Tom Brady'      },
             { id: 2, name: 'Rob Gronkowski' }
@@ -48,7 +48,7 @@ You can use JoinJS to convert this result set in to an array of teams with neste
     },
     {
         id: 2,
-        name: 'New York Jets'
+        name: 'New York Jets',
         players: [
             { id: 3, name: 'Geno Smith'     },
             { id: 4, name: 'Darrelle Revis' }
@@ -60,7 +60,7 @@ You can use JoinJS to convert this result set in to an array of teams with neste
 To teach JoinJS how to do this, you must create two result maps that describe your objects:
 
 ```javascript
-var resultMaps = [
+const resultMaps = [
     {
         mapId: 'teamMap',
         idProperty: 'id',
@@ -80,7 +80,7 @@ var resultMaps = [
 Once you have created these result maps, you can simply call JoinJS to convert your result set in to objects:
 
 ```javascript
-var mappedResult = joinjs.map(resultSet, resultMaps, 'teamMap', 'team_');
+let mappedResult = joinjs.map(resultSet, resultMaps, 'teamMap', 'team_');
 ```
 
 That's it! It doesn't matter how deep or complex your object hierarchy is, JoinJS can map it for you. Read the documentation below for more details. You can find more examples in the [test suite](https://github.com/archfirst/joinjs/tree/master/test). Follow the [step-by-step tutorial](https://archfirst.org/joinjs-an-alternative-to-complex-orms/) for a hands-on introduction. Once you have mastered the basics, check out the [Manage My Money](https://github.com/archfirst/manage-my-money-server) project to see how you can build a full-fledged application complete with a front-end using JoinJS and other useful libraries.
