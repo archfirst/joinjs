@@ -6,6 +6,7 @@ function NotFoundError(message = 'Not Found') {
     this.message = message;
     this.stack = (new Error()).stack;
 }
+
 NotFoundError.prototype = Object.create(Error.prototype);
 NotFoundError.prototype.constructor = NotFoundError;
 
@@ -22,7 +23,7 @@ function map(resultSet, maps, mapId, columnPrefix) {
 
     let mappedCollection = [];
 
-    _.each(resultSet, function(result) {
+    _.each(resultSet, (result) => {
         injectResultInCollection(result, mappedCollection, maps, mapId, columnPrefix);
     });
 
@@ -44,7 +45,7 @@ function map(resultSet, maps, mapId, columnPrefix) {
  * @returns {Object} one mapped object or null
  * @throws {NotFoundError} if object is not found and isRequired is true
  */
-function mapOne(resultSet, maps, mapId, columnPrefix, isRequired=true) {
+function mapOne(resultSet, maps, mapId, columnPrefix, isRequired = true) {
 
     var mappedCollection = map(resultSet, maps, mapId, columnPrefix);
 
@@ -68,20 +69,20 @@ function mapOne(resultSet, maps, mapId, columnPrefix, isRequired=true) {
  * @param {String} mapId - mapId of the top-level objects in the resultSet
  * @param {String} [columnPrefix] - prefix that should be applied to the column names of the top-level objects
  */
-function injectResultInCollection(result, mappedCollection, maps, mapId, columnPrefix) {
-
-    // Set up a default value for columnPrefix
-    if (columnPrefix === undefined) {
-        columnPrefix = '';
-    }
+function injectResultInCollection(result, mappedCollection, maps, mapId, columnPrefix = '') {
 
     // Check if the object is already in mappedCollection
     let resultMap = _.find(maps, ['mapId', mapId]);
     let idProperty = getIdProperty(resultMap);
-    let mappedObject = _.find(mappedCollection, [idProperty.name, result[columnPrefix + idProperty.column]]);
+    let predicate = _.transform(idProperty, (accumulator, field) => {
+        accumulator[field.name] = result[columnPrefix + field.column];
+    }, {});
+    let mappedObject = _.find(mappedCollection, predicate);
 
     // Inject only if the value of idProperty is not null (ignore joins to null records)
-    if (result[columnPrefix + idProperty.column]) {
+    let isIdPropertyNotNull = _.every(idProperty, field => !_.isNull(result[columnPrefix + field.column]));
+
+    if (isIdPropertyNotNull) {
         // Create mappedObject if it does not exist in mappedCollection
         if (!mappedObject) {
             mappedObject = createMappedObject(resultMap);
@@ -102,24 +103,23 @@ function injectResultInCollection(result, mappedCollection, maps, mapId, columnP
  * @param {String} mapId - mapId of the top-level objects in the resultSet
  * @param {String} [columnPrefix] - prefix that should be applied to the column names of the top-level objects
  */
-function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix) {
-
-    // Set up a default value for columnPrefix
-    if (columnPrefix === undefined) {
-        columnPrefix = '';
-    }
+function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix = '') {
 
     // Get the resultMap for this object
     let resultMap = _.find(maps, ['mapId', mapId]);
 
     // Copy id property
     let idProperty = getIdProperty(resultMap);
-    if (!mappedObject[idProperty.name]) {
-        mappedObject[idProperty.name] = result[columnPrefix + idProperty.column];
-    }
+
+    _.each(idProperty, field => {
+        if (!mappedObject[field.name]) {
+            mappedObject[field.name] = result[columnPrefix + field.column];
+        }
+    });
+
 
     // Copy other properties
-    _.each(resultMap.properties, function(property) {
+    _.each(resultMap.properties, (property) => {
         // If property is a string, convert it to an object
         if (typeof property === 'string') {
             property = {name: property, column: property};
@@ -136,19 +136,25 @@ function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix) {
     });
 
     // Copy associations
-    _.each(resultMap.associations, function(association) {
+    _.each(resultMap.associations, (association) => {
 
         let associatedObject = mappedObject[association.name];
+
         if (!associatedObject) {
             let associatedResultMap = _.find(maps, ['mapId', association.mapId]);
             let associatedObjectIdProperty = getIdProperty(associatedResultMap);
+
+            mappedObject[association.name] = null;
+
             // Don't create associated object if it's key value is null
-            if (result[association.columnPrefix + associatedObjectIdProperty.column]) {
+            let isAssociatedObjectIdPropertyNotNull = _.every(
+                associatedObjectIdProperty,
+                field => !_.isNull(result[association.columnPrefix + field.column])
+            );
+
+            if (isAssociatedObjectIdPropertyNotNull) {
                 associatedObject = createMappedObject(associatedResultMap);
                 mappedObject[association.name] = associatedObject;
-            }
-            else {
-                mappedObject[association.name] = null;
             }
         }
 
@@ -158,9 +164,10 @@ function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix) {
     });
 
     // Copy collections
-    _.each(resultMap.collections, function(collection) {
+    _.each(resultMap.collections, (collection) => {
 
         let mappedCollection = mappedObject[collection.name];
+
         if (!mappedCollection) {
             mappedCollection = [];
             mappedObject[collection.name] = mappedCollection;
@@ -175,19 +182,31 @@ function createMappedObject(resultMap) {
 }
 
 function getIdProperty(resultMap) {
-    var idProperty = (resultMap.idProperty) ? resultMap.idProperty : {name: 'id', column: 'id'};
 
-    // If property is a string, convert it to an object
-    if (typeof idProperty === 'string') {
-        idProperty = {name: idProperty, column: idProperty};
+    if (!resultMap.idProperty) {
+        return [{name: 'id', column: 'id'}];
     }
 
-    // The default for column name is property name
-    if (!idProperty.column) {
-        idProperty.column = idProperty.name;
+    let idProperties = resultMap.idProperty;
+
+    if (!_.isArray(idProperties)) {
+        idProperties = [idProperties];
     }
 
-    return idProperty;
+    return _.map(idProperties, idProperty => {
+
+        // If property is a string, convert it to an object
+        if (_.isString(idProperty)) {
+            return {name: idProperty, column: idProperty};
+        }
+
+        // The default for column name is property name
+        if (!idProperty.column) {
+            idProperty.column = idProperty.name;
+        }
+
+        return idProperty;
+    });
 }
 
 const joinjs = {

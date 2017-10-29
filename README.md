@@ -3,11 +3,13 @@
 JoinJS is a JavaScript library to map complex database joins to nested objects. It's a simpler alternative to a full-blown Object-Relation Mapper (ORM), and gives you direct control over your database interactions.
 
 ## Motivation: Direct, no-nonsense control over your database
+
 Traditional ORMs introduce a thick layer of abstraction between objects and database tables. This usually hinders, rather than helps, developer productivity. In complex use cases, it is difficult enough to devise efficient queries, but with ORMs you also have to *teach* them to generate the same query. It takes extra time to do this and you may not be able to produce the same query. In the worst case scenario, the ORM may hit the database multiple times for something that you were able to do in a single query.
 
 JoinJS takes a much simpler and straightforward approach inspired by a popular Java mapping framework called [MyBatis](http://mybatis.github.io/mybatis-3/) (see the post on [MyBatis vs. other ORMs](https://archfirst.org/mybatis-vs-other-orms/). You can use any database driver or query builder (such as [Knex.js](http://knexjs.org/)) to query your database, however you use JoinJS to convert the returned results into a hierarchy of nested objects.
 
 ## Example
+
 Suppose you have a one-to-many relationship between a `Team` and its `Players`. You want to retrieve all teams along with their players. Here's the query for to do this:
 
 ```sql
@@ -102,15 +104,18 @@ Using with ES6:
 ## Documentation
 
 ### ResultMap
+
 ResultMaps are used to teach JoinJS how to map database results to objects. Each result map focuses on a single object. The properties of a ResultMap are described below. You can find several examples in the [test suite](https://github.com/archfirst/joinjs/tree/master/test).
 
 - `mapId {String}` - A unique identifier for the map
 
 - `createNew {function} (optional)` - A function that returns a blank new instance of the mapped object. Use this property to construct a custom object instead of a generic JavaScript `Object`.
 
-- `idProperty {String | Object} (optional)` - specifies the name of the id property in the mapped object and in the result set. Default is `id`, which implies that the name of the id property in the mapped object as well as the column name in the result set are both `id`. If the two names are different, then you must specify the Object form, e.g. `{name: 'id', column: 'person_id'}`.
+- `idProperty {String | Object | Array(String|Object)} (optional)` - specifies the name of the id property in the mapped object and in the result set. Default is `id`, which implies that the name of the id property in the mapped object as well as the column name in the result set are both `id`. If the two names are different, then you must specify the Object form, e.g. `{name: 'id', column: 'person_id'}`.
     - `name` - property that identifies the mapped object
     - `column` - property that identifies the database record in the result set
+    
+    In addition, you can specify composite key by passing an array of string and/or object, e.g. `['person_id', {name: 'language', column: 'language_id'}]`
 
 - `properties {Array} (optional)` - names of other properties. For any property that has a different name in the mapped object vs. the result set, you must specify the object form, e.g. `{name: 'firstName', column: 'first_name'}`. The properties of the object form are:
     - `name` - property name in the mapped object
@@ -127,8 +132,8 @@ ResultMaps are used to teach JoinJS how to map database results to objects. Each
     - `columnPrefix (optional)` - a prefix to apply to every column of the associated object. Default is an empty string.
 
 ### API
-JoinJS exposes two very simple functions that give you the full power to map any result set to one of more JavaScript objects.
 
+JoinJS exposes two very simple functions that give you the full power to map any result set to one of more JavaScript objects.
 
 #### map(resultSet, maps, mapId, columnPrefix)
 
@@ -140,7 +145,6 @@ Maps a resultSet to an array of objects.
 - `columnPrefix {String} (optional)` - prefix that should be applied to the column names of the top-level objects
 
 Returns an array of mapped objects.
-
 
 #### mapOne(resultSet, maps, mapId, columnPrefix, isRequired)
 
@@ -157,6 +161,7 @@ Returns the mapped object or `null` if no object was mapped.
 Throws a `NotFoundError` if no object is mapped and `isRequired` is `true`.
 
 ## Resources
+
 - [JoinJS test suite](https://github.com/archfirst/joinjs/tree/master/test) - contains examples of various use cases
 - [Step-by-step tutorial](https://archfirst.org/joinjs-an-alternative-to-complex-orms/) - provides a hands-on introduction to JoinJS
 - [Manage My Money](https://github.com/archfirst/manage-my-money-server) - a full-fledged application complete with a front-end using JoinJS and other useful libraries

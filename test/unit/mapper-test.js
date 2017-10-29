@@ -51,6 +51,61 @@ describe('Mapper', () => {
         expect(mappedResult).to.deep.equal(expectedResult);
     });
 
+    it('should work when idProperty is composite', () => {
+        let resultSet = [
+            {
+                person_id: 1,
+                language_id: 1,
+                name: 'Yel'
+            },
+            {
+                person_id: 1,
+                language_id: 2,
+                name: 'Joie'
+            }
+        ];
+
+        var mappedResult = joinjs.map(resultSet, testMaps, 'withCompositeIdProperty');
+
+        expect(mappedResult).to.deep.equal(resultSet);
+    });
+
+    it('should work when column name is specified per idProperty', () => {
+        let resultSet = [
+            {
+                person_id: 1,
+                language_id: 1,
+                name: 'Yel'
+            },
+            {
+                person_id: 1,
+                language_id: 2,
+                name: 'Joie'
+            }
+        ];
+
+        let expectedResult = [
+            {
+                personId: 1,
+                languageId: 1,
+                name: 'Yel'
+            },
+            {
+                personId: 1,
+                languageId: 2,
+                name: 'Joie'
+            }
+        ];
+
+        var mappedResult = joinjs.map(
+            resultSet,
+            testMaps,
+            'withCompositeIdPropertyAndColumnSpecification'
+        );
+
+        expect(mappedResult).to.deep.equal(expectedResult);
+    });
+
     it('should work when properties are not specified', () => {
         let resultSet = [
             {
