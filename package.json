@@ -10,32 +10,26 @@
     "url": "https://github.com/archfirst/joinjs.git"
   },
   "scripts": {
-    "test": "gulp",
-    "build": "gulp build",
-    "coverage": "gulp coverage"
+    "test": "npm run lint && mocha --require babel-register",
+    "lint": "eslint '{src,test}/**/*.js'",
+    "build": "del-cli dist && npm run lint && babel src -d dist",
+    "coverage": "nyc mocha --require babel-register",
+    "docs": "jsdoc src -d apidocs"
   },
   "dependencies": {
     "lodash": "^4.13.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^8.0.1",
     "babel-preset-env": "^1.6.0",
-    "chai": "^3.4.1",
-    "del": "^2.2.0",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^6.1.2",
-    "gulp-istanbul": "^1.0.0",
-    "gulp-jscs": "^3.0.2",
-    "gulp-jshint": "^2.0.0",
-    "gulp-load-plugins": "^1.1.0",
-    "gulp-mocha": "^2.0.0",
-    "gulp-notify": "^2.1.0",
-    "gulp-plumber": "^1.0.1",
-    "isparta": "^4.0.0",
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.0",
+    "del-cli": "^1.1.0",
+    "eslint": "^4.2.0",
     "jsdoc": "^3.4.0",
-    "jshint": "^2.8.0",
-    "jshint-stylish": "^2.1.0",
-    "mkdirp": "^0.5.0",
-    "mocha": "^2.3.4"
+    "mocha": "^4.0.1",
+    "nyc": "^11.2.1"
   },
   "files": [
     "dist/",

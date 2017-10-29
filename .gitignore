@@ -18,5 +18,5 @@ apidocs
 .DS_Store*
 Thumbs.db
 
-# Ignore npm package lock
-package-lock.json
+# Ignore nyc output
+.nyc_output
