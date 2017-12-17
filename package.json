@@ -1,7 +1,7 @@
 {
   "name": "join-js",
   "description": "A library to map complex database joins to nested objects.",
-  "version": "0.4.1",
+  "version": "1.0.0",
   "author": "Naresh Bhatia",
   "license": "MIT",
   "homepage": "https://github.com/archfirst/joinjs",
@@ -21,22 +21,19 @@
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
-    "babel-eslint": "^8.0.1",
+    "babel-eslint": "^8.0.3",
     "babel-preset-env": "^1.6.0",
     "babel-register": "^6.26.0",
     "chai": "^4.1.0",
     "del-cli": "^1.1.0",
-    "eslint": "^4.2.0",
+    "eslint": "^4.13.1",
     "jsdoc": "^3.4.0",
     "mocha": "^4.0.1",
-    "nyc": "^11.2.1"
+    "nyc": "^11.3.0"
   },
   "files": [
     "dist/",
-    "src/",
-    "test/",
-    "LICENSE",
-    "README.md"
+    "LICENSE"
   ],
   "main": "dist/index.js"
 }
