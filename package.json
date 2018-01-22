@@ -15,10 +15,12 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "npm run lint && mocha --require babel-register",
     "lint": "eslint '{src,test}/**/*.js'",
-    "build": "del-cli dist && npm run lint && babel src -d dist",
-    "coverage": "nyc mocha --require babel-register",
+    "prebuild": "del-cli dist",
+    "build": "babel src -d dist",
+    "test": "mocha --require babel-register",
+    "test:prod": "npm run lint && npm run coverage",
+    "coverage": "nyc --reporter=lcov --reporter=text mocha --require babel-register",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "commit": "git-cz",
     "semantic-release": "semantic-release",

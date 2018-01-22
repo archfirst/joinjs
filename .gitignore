@@ -4,6 +4,7 @@ node_modules
 # Ignore build/release directories
 dist
 coverage
+.nyc_output
 
 # Ignore Web Storm
 .idea
@@ -17,6 +18,3 @@ apidocs
 # Ignore OS generated files
 .DS_Store*
 Thumbs.db
-
-# Ignore nyc output
-.nyc_output
