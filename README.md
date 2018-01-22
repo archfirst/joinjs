@@ -1,5 +1,8 @@
 # JoinJS
 
+[![Build Status](https://travis-ci.org/archfirst/joinjs.svg?branch=master)](https://travis-ci.org/archfirst/joinjs)
+[![Coverage Status](https://coveralls.io/repos/github/archfirst/joinjs/badge.svg?branch=master)](https://coveralls.io/github/archfirst/joinjs?branch=master)
+
 JoinJS is a JavaScript library to map complex database joins to nested objects. It's a simpler alternative to a full-blown Object-Relation Mapper (ORM), and gives you direct control over your database interactions.
 
 ## Motivation: Direct, no-nonsense control over your database
