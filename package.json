@@ -44,6 +44,7 @@
     "eslint": "^5.7.0",
     "husky": "^1.1.2",
     "jsdoc": "^3.4.0",
+    "marked": "^0.5.1",
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
     "semantic-release": "^15.10.3"
