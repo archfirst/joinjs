@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 /** Thrown when mapOne does not find an object in the resultSet and "isRequired" is passed in as true */
 function NotFoundError(message = 'Not Found') {
     this.name = 'NotFoundError';
@@ -23,7 +21,7 @@ function map(resultSet, maps, mapId, columnPrefix) {
 
     let mappedCollection = [];
 
-    _.each(resultSet, (result) => {
+    resultSet.forEach(result => {
         injectResultInCollection(result, mappedCollection, maps, mapId, columnPrefix);
     });
 
@@ -72,15 +70,24 @@ function mapOne(resultSet, maps, mapId, columnPrefix, isRequired = true) {
 function injectResultInCollection(result, mappedCollection, maps, mapId, columnPrefix = '') {
 
     // Check if the object is already in mappedCollection
-    let resultMap = _.find(maps, ['mapId', mapId]);
+    let resultMap = maps.find(map => map.mapId === mapId);
     let idProperty = getIdProperty(resultMap);
-    let predicate = _.transform(idProperty, (accumulator, field) => {
+    let predicate = idProperty.reduce((accumulator, field) => {
         accumulator[field.name] = result[columnPrefix + field.column];
+        return accumulator;
     }, {});
-    let mappedObject = _.find(mappedCollection, predicate);
+
+    let mappedObject = mappedCollection.find(item => {
+        for (let k in predicate) {
+            if (item[k] !== predicate[k]) {
+                return false;
+            }
+        }
+        return true;
+    });
 
     // Inject only if the value of idProperty is not null (ignore joins to null records)
-    let isIdPropertyNotNull = _.every(idProperty, field => !_.isNull(result[columnPrefix + field.column]));
+    let isIdPropertyNotNull = idProperty.every(field => result[columnPrefix + field.column] !== null);
 
     if (isIdPropertyNotNull) {
         // Create mappedObject if it does not exist in mappedCollection
@@ -106,20 +113,21 @@ function injectResultInCollection(result, mappedCollection, maps, mapId, columnP
 function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix = '') {
 
     // Get the resultMap for this object
-    let resultMap = _.find(maps, ['mapId', mapId]);
+    let resultMap = maps.find(map => map.mapId === mapId);
 
     // Copy id property
     let idProperty = getIdProperty(resultMap);
 
-    _.each(idProperty, field => {
+    idProperty.forEach(field => {
         if (!mappedObject[field.name]) {
             mappedObject[field.name] = result[columnPrefix + field.column];
         }
     });
 
+    const {properties, associations, collections} = resultMap;
 
     // Copy other properties
-    _.each(resultMap.properties, (property) => {
+    properties && properties.forEach(property => {
         // If property is a string, convert it to an object
         if (typeof property === 'string') {
             // eslint-disable-next-line
@@ -137,20 +145,19 @@ function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix = 
     });
 
     // Copy associations
-    _.each(resultMap.associations, (association) => {
+    associations && associations.forEach(association => {
 
         let associatedObject = mappedObject[association.name];
 
         if (!associatedObject) {
-            let associatedResultMap = _.find(maps, ['mapId', association.mapId]);
+            let associatedResultMap = maps.find(map => map.mapId === association.mapId);
             let associatedObjectIdProperty = getIdProperty(associatedResultMap);
 
             mappedObject[association.name] = null;
 
             // Don't create associated object if it's key value is null
-            let isAssociatedObjectIdPropertyNotNull = _.every(
-                associatedObjectIdProperty,
-                field => !_.isNull(result[association.columnPrefix + field.column])
+            let isAssociatedObjectIdPropertyNotNull = associatedObjectIdProperty.every(field =>
+                result[association.columnPrefix + field.column] !== null
             );
 
             if (isAssociatedObjectIdPropertyNotNull) {
@@ -165,7 +172,7 @@ function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix = 
     });
 
     // Copy collections
-    _.each(resultMap.collections, (collection) => {
+    collections && collections.forEach(collection => {
 
         let mappedCollection = mappedObject[collection.name];
 
@@ -190,14 +197,14 @@ function getIdProperty(resultMap) {
 
     let idProperties = resultMap.idProperty;
 
-    if (!_.isArray(idProperties)) {
+    if (!Array.isArray(idProperties)) {
         idProperties = [idProperties];
     }
 
-    return _.map(idProperties, idProperty => {
+    return idProperties.map(idProperty => {
 
         // If property is a string, convert it to an object
-        if (_.isString(idProperty)) {
+        if (typeof idProperty === 'string') {
             return {name: idProperty, column: idProperty};
         }
 
