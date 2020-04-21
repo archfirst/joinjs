@@ -10,8 +10,10 @@
     "url": "https://github.com/archfirst/joinjs.git"
   },
   "main": "dist/index.js",
+  "types": "index.d.ts",
   "files": [
     "dist/",
+    "index.d.ts",
     "LICENSE"
   ],
   "scripts": {
