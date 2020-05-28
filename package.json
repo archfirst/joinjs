@@ -1,7 +1,7 @@
 {
   "name": "join-js",
   "description": "A library to map complex database joins to nested objects.",
-  "version": "0.0.0-development",
+  "version": "1.1.0",
   "author": "Naresh Bhatia",
   "license": "MIT",
   "homepage": "https://github.com/archfirst/joinjs",
@@ -25,7 +25,6 @@
     "test:coverage": "nyc --reporter=lcov --reporter=text mocha --require babel-register",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "cz-commit": "git-cz",
-    "semantic-release": "semantic-release",
     "docs": "jsdoc src -d apidocs"
   },
   "dependencies": {},
@@ -46,37 +45,26 @@
     "jsdoc": "^3.6.4",
     "marked": "^1.1.0",
     "mocha": "^7.2.0",
-    "nyc": "^15.0.1",
-    "semantic-release": "^17.0.8"
+    "nyc": "^15.0.1"
   },
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "subject-case": [
+        0
+      ]
+    }
+  },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
-    }
-  },
-  "release": {
-    "analyzeCommits": {
-      "preset": "angular",
-      "releaseRules": [
-        {
-          "type": "docs",
-          "scope": "README",
-          "release": "patch"
-        },
-        {
-          "type": "refactor",
-          "release": "patch"
-        },
-        {
-          "type": "style",
-          "release": "patch"
-        }
-      ]
     }
   }
 }

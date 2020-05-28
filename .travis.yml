@@ -10,4 +10,3 @@ script:
   - npm run build:local
 after_success:
   - npm run report-coverage
-  - npm run semantic-release
