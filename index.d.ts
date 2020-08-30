@@ -2,10 +2,10 @@ declare module "join-js" {
   export type ResultMap = {
     mapId: string;
     createNew?: () => any;
-    idProperty?: string | { name: string, colmun: string } | (string | { name: string, colmun: string })[];
+    idProperty?: string | { name: string, column: string } | (string | { name: string, column: string })[];
     properties?: (string | {
       name: string;
-      colmun: string;
+      column: string;
     })[];
     associations?: {
       name: string;
