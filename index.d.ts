@@ -1,4 +1,4 @@
-declare module "join-js" {
+declare module "joinqr" {
   export type ResultMap = {
     mapId: string;
     createNew?: () => any;
