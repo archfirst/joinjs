@@ -1,13 +1,13 @@
 {
   "name": "join-js",
   "description": "A library to map complex database joins to nested objects.",
-  "version": "1.1.2",
-  "author": "Naresh Bhatia",
+  "version": "1.1.4",
+  "author": "Naresh Bhatia, Igor Volnyi",
   "license": "MIT",
-  "homepage": "https://github.com/archfirst/joinjs",
+  "homepage": "https://github.com/igorvolnyi/joinjs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/archfirst/joinjs.git"
+    "url": "https://github.com/igorvolnyi/joinjs.git"
   },
   "main": "dist/index.js",
   "types": "index.d.ts",
