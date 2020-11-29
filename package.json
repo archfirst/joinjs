@@ -1,7 +1,7 @@
 {
   "name": "joinqr",
   "description": "A library to map complex database join query results to nested objects.",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "author": "Naresh Bhatia, Igor Volnyi",
   "license": "MIT",
   "homepage": "https://github.com/igorvolnyi/joinjs",
