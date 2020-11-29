@@ -1,4 +1,4 @@
-declare module "join-js" {
+declare module "joinqr" {
   export type ResultMap = {
     mapId: string;
     createNew?: () => any;
@@ -18,7 +18,7 @@ declare module "join-js" {
       columnPrefix?: string;
     }[];
   };
-  declare function NotFoundError(message?: string): void;
+  export type NotFoundError = (message?: string) => void;
   const JoinJs: {
     map(resultSet: any[], maps: ResultMap[], mapId: string, columnPrefix?: string): any;
     mapOne(resultSet: any[], maps: ResultMap[], mapId: string, columnPrefix?: string, isRequired?: boolean): any;
