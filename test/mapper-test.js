@@ -638,4 +638,89 @@ describe('Mapper', () => {
 
         expect(mappedResult).to.deep.equal(expectedResult);
     });
+
+    it('should not create objects when association is not present', () => {
+        let resultSet = [
+            { a_id: 1, a_prop: 10, b_id: 11, b_prop: 110, c_id: null, c_prop: null },
+            { a_id: 2, a_prop: 20, b_id: 21, b_prop: 210 },
+            { a_id: 3, a_prop: 30, b_id: null, b_prop: null },
+            { a_id: 4, a_prop: 40 },
+        ];
+
+        let expectedResult = [
+            {
+                id: 1,
+                prop: 10,
+                b: {
+                    id: 11,
+                    prop: 110,
+                    c: null
+                }
+            },
+            {
+                id: 2,
+                prop: 20,
+                b: {
+                    id: 21,
+                    prop: 210,
+                    c: null
+                }
+            },
+            {
+                id: 3,
+                prop: 30,
+                b: null
+            },
+            {
+                id: 4,
+                prop: 40,
+                b: null
+            }
+        ];
+
+        var mappedResult = joinjs.map(resultSet, testMaps, 'aMap', 'a_');
+
+        expect(mappedResult).to.deep.equal(expectedResult);
+    });
+
+    it('should not create objects when collection is not present', () => {
+        let resultSet = [
+            { j_id: 1, j_prop: 10, k_id: 11, k_prop: 110, l_id: null, l_prop: null },
+            { j_id: 1, j_prop: 10, k_id: 11, k_prop: 110, l_id: null, l_prop: null },
+            { j_id: 1, j_prop: 10, k_id: 12, k_prop: 120 },
+            { j_id: 1, j_prop: 10, k_id: 12, k_prop: 120 },
+            { j_id: 2, j_prop: 20, k_id: null, k_prop: null },
+            { j_id: 2, j_prop: 20, k_id: null, k_prop: null },
+            { j_id: 2, j_prop: 20 },
+            { j_id: 2, j_prop: 20 }
+        ];
+
+        let expectedResult = [
+            {
+                id: 1,
+                prop: 10,
+                kCollection: [
+                    {
+                        id: 11,
+                        prop: 110,
+                        lCollection: []
+                    },
+                    {
+                        id: 12,
+                        prop: 120,
+                        lCollection: []
+                    }
+                ]
+            },
+            {
+                id: 2,
+                prop: 20,
+                kCollection: []
+            }
+        ];
+
+        var mappedResult = joinjs.map(resultSet, testMaps, 'jMap', 'j_');
+
+        expect(mappedResult).to.deep.equal(expectedResult);
+    });
 });

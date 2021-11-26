@@ -86,8 +86,8 @@ function injectResultInCollection(result, mappedCollection, maps, mapId, columnP
         return true;
     });
 
-    // Inject only if the value of idProperty is not null (ignore joins to null records)
-    let isIdPropertyNotNull = idProperty.every(field => result[columnPrefix + field.column] !== null);
+    // Inject only if the value of idProperty is not null (ignore joins to null records) and not undefined
+    let isIdPropertyNotNull = idProperty.every(field => notNullOrUndefined(result[columnPrefix + field.column]));
 
     if (isIdPropertyNotNull) {
         // Create mappedObject if it does not exist in mappedCollection
@@ -155,9 +155,9 @@ function injectResultInObject(result, mappedObject, maps, mapId, columnPrefix = 
 
             mappedObject[association.name] = null;
 
-            // Don't create associated object if it's key value is null
+            // Don't create associated object if it's key value is null or undefined
             let isAssociatedObjectIdPropertyNotNull = associatedObjectIdProperty.every(field =>
-                result[association.columnPrefix + field.column] !== null
+                notNullOrUndefined(result[association.columnPrefix + field.column])
             );
 
             if (isAssociatedObjectIdPropertyNotNull) {
@@ -215,6 +215,10 @@ function getIdProperty(resultMap) {
 
         return idProperty;
     });
+}
+
+function notNullOrUndefined(value) {
+    return !(value === null || value === undefined);
 }
 
 const joinjs = {
